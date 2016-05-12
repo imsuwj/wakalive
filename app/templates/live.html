@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block body %}
+<h2 id='livename'>{{ live['activityName'] }}</h2>
+<p id='description'>{{ live['description']}}</p>
+<div id="player" style="width:100%;height:600px;">
+    <script type="text/javascript" charset="utf-8" src="http://yuntv.letv.com/player/live/blive.js"></script>
+    <script>
+        var player = new CloudLivePlayer();
+        player.init({activityId:"{{ live['activityId'] }}"});
+    </script>
+</div>
+{% endblock %}

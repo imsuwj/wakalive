@@ -1,0 +1,36 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WakaLive</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+</head>
+<body>
+    <div id="headbox">
+        <ul>
+            <li><a href="{{ url_for('index') }}">主页</a></li>
+            {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('manage') }}">个人</a></li>
+                {% if current_user.is_admin() %}
+                    <li><a href="{{ url_for('admin') }}">管理</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}">登出</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">登录</a></li>
+                <li><a href="{{ url_for('register') }}">注册</a></li>
+            {% endif %}
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div id="title">
+        <h1 id='sitename'>WakaLive</h1>
+    </div>
+    <div id="container">
+        {% for message in get_flashed_messages() %}
+          <div id="flash">{{ message }}</div>
+        {% endfor %}
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+</html>

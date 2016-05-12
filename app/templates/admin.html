@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block body %}
+<div id="user_list">
+    <h3>用户列表</h3>
+    <ul class="user">
+        {% for user in user_list %}
+          <li>
+              <div class="user_info">
+                  用户ID：<span class="id">{{ user.id }}</span>
+                  用户邮箱：<span class="email">{{ user.email }}</span>
+              </div>
+              <div class="live_info">
+                  直播：
+                    <a href="{{ url_for('live',aid = user.lives.first().aid )}}" class="live">{{ user.lives.first().name}}</a>
+              </div>
+              <div class="manage">
+                  <form action="{{ url_for('admin_pass_user') }}" method=post>
+                      <input type="hidden" name="userid" value="{{ user.id }}">
+                      <input type="submit" value="审核用户">
+                  </form>
+                  <form action="{{ url_for('admin_delete_user') }}" method=post>
+                      <input type="hidden" name="userid" value="{{ user.id }}">
+                      <input type="submit" value="删除用户">
+                  </form>
+                  <form action="{{ url_for('admin_delete_live') }}" method=post>
+                      <input type="hidden" name="live_id" value="{{ user.lives.first().id }}">
+                      <input type="hidden" name="activity_id" value="{{ user.lives.first().aid }}">
+                      <input type="submit" value="删除直播">
+                  </form>
+              </div>
+          </li>
+        {% else %}
+          <li><em>暂时没有用户.</em></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

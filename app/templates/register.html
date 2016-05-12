@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="authbox">
+    <h2>注册</h2>
+    <form action="{{ url_for('register') }}" method=post>
+        <label for="email">邮箱:</label>
+        <input type=email name=email required="required">
+        <label for="email">昵称:</label>
+        <input type=email name=email required="required">
+        <br>
+        <label for="password">密码:</label>
+        <input type=password name=password required="required">
+        <label for="confirm_password">确认密码:</label>
+        <input type=password name=confirm_password required="required">
+        <br>
+        <input type=submit name=login_submit value=注册>
+      </dl>
+    </form>
+</div>
+{% endblock %}

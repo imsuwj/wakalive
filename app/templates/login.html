@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="authbox">
+    <h2>登录</h2>
+    <form action="{{ url_for('login') }}" method=post>
+        <label for="email">邮箱:</label>
+        <input type=email name=email required="required">
+        <br>
+        <label for="password">密码:</label>
+        <br>
+        <input type=password name=password required="required">
+        <br>
+        <input type=submit name=login_submit value=登录>
+    </form>
+</div>
+{% endblock %}

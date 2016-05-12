@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block body %}
+<div id=user_info class="info">
+    <label for=email>用户名</label>
+    <span class=email name=email>{{current_user.email}}</span>
+    <br>
+    <form action="{{ url_for('user_update') }}" method=post>
+        <label for=nickname>
+            <span>昵称</span>
+            <input type=text name=nickname id=nickname value={{current_user.nickname}}>
+        </label>
+        <label for=password>
+            <span>新密码</span>
+            <input type=password name=password id=password>
+        </label>
+        <input type=submit value=更新>
+    </form>
+</div>
+
+<div id=live_info class="info">
+    {% if live_info %}
+    <div class="info_block">
+        <form action="{{ url_for('live_update') }}" method=post>
+            <input type="hidden" name="activity_id" value="{{ live_info['activityId'] }}">
+            <label for=create_time>
+                <span>创建时间:{{ live_info['createTime'] }}</span>
+            </label>
+            <label for=livename>
+                <span>直播名称:</span>
+                <input type=text name=activity_name id=activity_name value="{{ live_info['activityName'] }}">
+            </label>
+            <label for="description">
+                <span>直播简介:</span>
+                <textarea name=description rows="4" cols="40" id=description>{{ live_info['description'] }}</textarea>
+            </label>
+            <label>清晰度:</label>
+            <input type="checkbox" name=code_rate_types value="13">标清
+            <input type="checkbox" name=code_rate_types value="16">高清
+            <input type="checkbox" name=code_rate_types value="19">超清
+            <input type="checkbox" name=code_rate_types value="22">720P
+            <input type="checkbox" name=code_rate_types value="25">1080P
+            <input type="checkbox" name=code_rate_types value="99">原画
+            <input type="submit" value="更新直播信息">
+        </form>
+    </div>
+    <div class="info_block">
+        <button id="get-live-stream">获取直播推流信息</button>
+        <p>直播推流软件下载:<a href="https://obsproject.com/download">OBS Studio</a></p>
+        <label for="fmsurl">FMS URL</label><input type="text" name='fmsurl' id='fmsurl'>
+        <label for="fmspath">播放路径</label><input type="text" name='fmspath' id='fmspath'>
+        <script type="text/javascript">
+            document.getElementById('get-live-stream').onclick = function(){
+                var myRequest = new XMLHttpRequest();
+                myRequest.open('GET','{{ url_for('live_stream',id=live_info['liveId']) }}');
+                myRequest.send();
+                myRequest.onreadystatechange = function(){
+                    if ((myRequest.readyState==4) && (myRequest.status==200)){
+                        r = myRequest.responseText;
+                        document.getElementById('fmsurl').value = r.substring(0,r.lastIndexOf('/'));
+                        document.getElementById('fmspath').value = r.substring(r.lastIndexOf('/')+1);
+                    }
+
+                }
+
+            }
+        </script>
+    </div>
+    <div class="info_block">
+        <form action="{{ url_for('live_cancel') }}" method=post>
+            <input type="hidden" name="live_id" value="{{ live_info['liveId'] }}">
+            <input type="hidden" name="activity_id" value="{{ live_info['activityId'] }}">
+            <input type="submit" name=cancel_live value="删除直播">
+        </form>
+    </div>
+    {% else %} {% if current_user.is_passed() %}
+    <form action="{{ url_for('live_create') }}" method=post>
+        <label for=activity_name>
+            <span>直播名称:</span>
+            <input type=text name=activity_name id=activity_name required>
+        </label>
+        <label for="description">
+            <span>直播简介:</span>
+            <textarea name=description rows="4" cols="40" id=description required></textarea>
+        </label>
+        <label>清晰度:</label>
+        <input type="checkbox" name=code_rate_types value="13">标清
+        <input type="checkbox" name=code_rate_types value="16">高清
+        <input type="checkbox" name=code_rate_types value="19">超清
+        <input type="checkbox" name=code_rate_types value="22">720P
+        <input type="checkbox" name=code_rate_types value="25">1080P
+        <input type="checkbox" name=code_rate_types value="99">原画
+        <input type="submit" name=create_live value="开始直播！">
+    </form>
+    {% else %}
+    <p>你的账户还没审核</p>
+    <p>请联系WayJam</p>
+    {% endif %} {% endif %}
+</div>
+{% endblock %}
