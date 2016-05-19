@@ -24,6 +24,9 @@
             <label for=create_time>
                 <span>创建时间:{{ live_info['createTime'] }}</span>
             </label>
+            <label for="end_time">
+                <span>结束时间:{{ live_info['endTime']}}</span>
+            </label>
             <label for=livename>
                 <span>直播名称:</span>
                 <input type=text name=activity_name id=activity_name value="{{ live_info['activityName'] }}">
@@ -33,12 +36,15 @@
                 <textarea name=description rows="4" cols="40" id=description>{{ live_info['description'] }}</textarea>
             </label>
             <label>清晰度:</label>
-            <input type="checkbox" name=code_rate_types value="13">标清
             <input type="checkbox" name=code_rate_types value="16">高清
             <input type="checkbox" name=code_rate_types value="19">超清
             <input type="checkbox" name=code_rate_types value="22">720P
             <input type="checkbox" name=code_rate_types value="25">1080P
             <input type="checkbox" name=code_rate_types value="99">原画
+            <label for="add_live_time">
+                延长直播时间:
+                <input type="radio" name='add_live_time' id='add_live_time' >
+            </label>
             <input type="submit" value="更新直播信息">
         </form>
     </div>
@@ -82,7 +88,6 @@
             <textarea name=description rows="4" cols="40" id=description required></textarea>
         </label>
         <label>清晰度:</label>
-        <input type="checkbox" name=code_rate_types value="13">标清
         <input type="checkbox" name=code_rate_types value="16">高清
         <input type="checkbox" name=code_rate_types value="19">超清
         <input type="checkbox" name=code_rate_types value="22">720P

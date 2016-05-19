@@ -81,6 +81,8 @@ class WakaLive():
             post_data['description'] = params['description']
         if 'codeRateTypes' in params:
             post_data['codeRateTypes'] = params['codeRateTypes']
+        if 'add_live_time' in params and params['add_live_time']:
+            post_data['endTime'] = time.strftime("%Y%m%d%H%M%S", time.localtime(time.time() + 2592000))
         return self.generateRequest(post_data, method_is_get=False)
 
     def getPushUrl(self,aid):

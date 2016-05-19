@@ -65,3 +65,4 @@ target/
 /test
 /venv
 app.db
+/migrations

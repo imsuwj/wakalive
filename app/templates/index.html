@@ -4,7 +4,9 @@
 <div id="live_list">
     <ul class="lives">
         {% for live in live_list %}
-          <li><a href="{{ url_for('live',aid = live.aid )}}"+{{live.aid}}>{{live.name}}</a></li>
+          <li>
+              <a href="{{ url_for('live',id = live.id )}}"+{{live.id}}>{{ live.user.nickname }} - {{live.name}}</a>
+          </li>
         {% else %}
           <li><em>现在没有直播.</em></li>
         {% endfor %}

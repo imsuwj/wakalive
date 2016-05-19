@@ -3,7 +3,6 @@
     <meta charset="UTF-8">
     <title>WakaLive</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
 </head>
 <body>
     <div id="headbox">
@@ -20,11 +19,13 @@
                 <li><a href="{{ url_for('register') }}">注册</a></li>
             {% endif %}
         </ul>
+        <div id="title">
+            <h1 id='sitename'>WakaLive</h1>
+        </div>
+
         <div class="clear"></div>
     </div>
-    <div id="title">
-        <h1 id='sitename'>WakaLive</h1>
-    </div>
+
     <div id="container">
         {% for message in get_flashed_messages() %}
           <div id="flash">{{ message }}</div>

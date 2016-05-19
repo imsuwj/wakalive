@@ -1,12 +1,31 @@
 {% extends "base.html" %}
 {% block body %}
-<h2 id='livename'>{{ live['activityName'] }}</h2>
+<h2 id='livename'>{{ nickname }} - {{ live['activityName'] }}</h2>
 <p id='description'>{{ live['description']}}</p>
-<div id="player" style="width:100%;height:600px;">
+<div id="player" style="width:100%;height:500px;">
     <script type="text/javascript" charset="utf-8" src="http://yuntv.letv.com/player/live/blive.js"></script>
     <script>
         var player = new CloudLivePlayer();
         player.init({activityId:"{{ live['activityId'] }}"});
     </script>
 </div>
+<div class="chatbox">
+  <input id="input-send" class="input-send" type="text" placeholder="输入弹幕...">
+  <button id="send-btn" class="btn">发送</button>
+</div>
+<div id="chatroom" ></div>
+<script>
+    var appId = '{{ leancloud_appid }}';
+    var appKey = '{{ leancloud_appkey  }}';
+    var nickName ='{{ nickname }}';
+    var roomId = '{{ leancloud_roomid  }}';
+</script>
+  <!-- 引入 LeanCloud 实时通信 SDK -->
+  <script src="{{ url_for('static', filename='leancloud/realtime.browser.js') }}"></script>
+  <!-- 引入 LeanCloud 存储 SDK -->
+  <script src="https://cdn1.lncld.net/static/js/av-mini-1.0.0-rc5.js"></script>
+  <!-- 引入 LeanCloud 实时通讯 TypedMessages -->
+  <script src="{{ url_for('static', filename='leancloud/typed-messages.js') }}"></script>
+  <!-- 逻辑文件 -->
+  <script src="{{ url_for('static', filename='live.js') }}"></script>
 {% endblock %}

@@ -1,7 +1,6 @@
-from app import app, models, login_manager, lecloud
+from app import app, models, login_manager, lecloud,leancloud,re
 from flask import flash, render_template, redirect, url_for, session, abort, request
 from flask.ext.login import current_user, login_required, login_user, logout_user
-
 
 @login_manager.user_loader
 def load_user(id):
@@ -63,6 +62,8 @@ def manage():
     else:
         live_info = lecloud.queryLive(live.aid)
         live_info['liveId'] = live.id
+        live_info['createTime'] = fomart_date(live_info['createTime'])
+        live_info['endTime'] = fomart_date(live_info['endTime'])
     return render_template('manage.html', live_info=live_info)
 
 
@@ -90,10 +91,12 @@ def live_create():
             'description': request.form['description']
         }
         form_dict['codeRateTypes'] = ','.join(sorted(request.form.getlist(
-            'code_rate_types'), reverse=True)) if request.form.getlist('code_rate_types') else '99,13'
+            'code_rate_types'), reverse=True)) if request.form.getlist('code_rate_types') else '99'
+        form_dict['codeRateTypes'] += ',13'
         activityId = lecloud.createLive(form_dict)
+        room_id = leancloud.createRoom(request.form['activity_name'])
         models.Live.add(uid=current_user.id, aid=activityId,
-                        name=form_dict['activityName'])
+                        name=form_dict['activityName'],roomid = room_id)
         flash('直播创建成功.')
     return redirect(url_for('manage'))
 
@@ -107,13 +110,16 @@ def live_update():
         }
         if request.form['activity_name'] != '':
             form_dict['activityName'] = request.form['activity_name']
-            models.Live.update(current_user.lives.first().id,
+            models.Live.update(current_user.lives.first().id,name =
                                request.form['activity_name'])
         if request.form['description'] != '':
             form_dict['description'] = request.form['description']
         if request.form.getlist('code_rate_types'):
             form_dict['codeRateTypes'] = ','.join(sorted(request.form.getlist(
-            'code_rate_types'), reverse=True))
+                'code_rate_types'), reverse=True))
+            form_dict['codeRateTypes'] += ',13'
+        if request.form['add_live_time']:
+            form_dict['add_live_time'] = True
         lecloud.modifyLive(form_dict)
         flash('直播设置更改成功.')
     return redirect(url_for('manage'))
@@ -139,10 +145,15 @@ def live_stream(id):
     return redirect(url_for('manage'))
 
 
-@app.route('/live/g/<aid>')
-def live(aid):
-    live = lecloud.queryLive(aid)
-    return render_template('live.html', live=live)
+@app.route('/live/<id>')
+def live(id):
+    live = models.Live.list(id=id)
+    if live.roomid == '':
+        models.Live.update(id,roomid=leancloud.createRoom(live.name))
+    live_info = lecloud.queryLive(live.aid)
+    nickname = live.user.nickname
+    print(live.roomid)
+    return render_template('live.html', live=live_info, nickname=nickname, leancloud_appid=app.config['LEANCLOUD_APPID'], leancloud_appkey=app.config['LEANCLOUD_APPKEY'], leancloud_roomid=live.roomid)
 
 
 @app.route('/admin')
@@ -168,13 +179,14 @@ def admin_delete_user():
         flash('权限不足!')
     return redirect(url_for('admin'))
 
+
 @app.route('/admin/pass-user', methods=['POST'])
 @login_required
 def admin_pass_user():
     if current_user.is_admin():
         user_dict = {
-            'id' : request.form['userid'],
-            'role' : 1
+            'id': request.form['userid'],
+            'role': 1
         }
         models.User.update(user_dict)
     else:
@@ -191,3 +203,10 @@ def admin_delete_live():
     else:
         flash('权限不足!')
     return redirect(url_for('admin'))
+
+'''
+Some method
+'''
+def fomart_date(str_time):
+    s = re.sub('(..)', r'/\1', str_time)
+    return s[1:3]+s[4:]
