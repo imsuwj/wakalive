@@ -73,7 +73,7 @@ function main() {
       return conversation;
     } else {
       // 如果服务器端不存在这个 conversation
-      showLog('服务器不存在这个 conversation，创建一个。');
+      //showLog('服务器不存在这个 conversation，创建一个。');
       return client.createConversation({
         name: 'WakaLive-Conversation',
         members: [
@@ -87,7 +87,7 @@ function main() {
 
         }
       }).then(function(conversation) {
-        showLog('创建新 Room 成功，id 是：', roomId);
+        //showLog('创建新 Room 成功，id 是：', roomId);
         roomId = conversation.id;
         return conversation;
       });

@@ -148,11 +148,10 @@ def live_stream(id):
 @app.route('/live/<id>')
 def live(id):
     live = models.Live.list(id=id)
-    if live.roomid == '':
+    if live.roomid is None:
         models.Live.update(id,roomid=leancloud.createRoom(live.name))
     live_info = lecloud.queryLive(live.aid)
     nickname = live.user.nickname
-    print(live.roomid)
     return render_template('live.html', live=live_info, nickname=nickname, leancloud_appid=app.config['LEANCLOUD_APPID'], leancloud_appkey=app.config['LEANCLOUD_APPKEY'], leancloud_roomid=live.roomid)
 
 
