@@ -99,7 +99,7 @@ class Live(db.Model):
     @classmethod
     def update(cls,id,name = None,roomid=None):
         l = cls.query.get(id)
-        if l.name:
+        if name:
             l.name = name
         if roomid:
             l.roomid = roomid
