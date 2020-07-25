@@ -1,8 +1,8 @@
 from flask import Flask
 from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
-import os,re
-from . import lecloud,leancloud
+import os
+from . import le
 
 #initiate the app
 app = Flask(__name__)
@@ -15,10 +15,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
 #initiate the Lecloud
-lecloud = lecloud.WakaLive(app.config['LECLOUD_USERID'],app.config['LECLOUD_SECRETKEY'])
-
-#initiate the leancloud
-leancloud = leancloud.LeanCloud(app.config['LEANCLOUD_APPID'],app.config['LEANCLOUD_APPKEY'])
+lecloud = le.WakaLive(app.config['LECLOUD_USERID'],app.config['LECLOUD_SECRETKEY'])
 
 from app import views,models
 if not os.path.exists(app.config['SQLALCHEMY_DATABASE_PATH']):

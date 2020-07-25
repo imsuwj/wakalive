@@ -27,7 +27,7 @@ class User(UserMixin,db.Model):
 
     @classmethod
     def get(cls,id):
-        u = cls.query.get(id)
+        u = cls.query.filter_by(id = id).first()
         return u
 
     @classmethod
@@ -81,40 +81,35 @@ class Live(db.Model):
     uid = db.Column(db.Integer, db.ForeignKey('user.id'))
     aid = db.Column(db.String(32))
     name = db.Column(db.String(120))
-    roomid = db.Column(db.String(120))
 
-    def __init__(self, uid, aid,name,roomid):
+    def __init__(self, uid, aid,name):
         self.uid = uid
         self.aid = aid
         self.name = name
-        self.roomid = roomid
 
     @classmethod
-    def add(cls, uid, aid,name,roomid):
-        l = cls(uid, aid,name,roomid)
+    def add(cls, uid, aid,name):
+        l = cls(uid, aid,name)
         db.session.add(l)
         db.session.commit()
         return l.id
 
     @classmethod
-    def update(cls,id,name = None,roomid=None):
-        l = cls.query.get(id)
-        if name:
-            l.name = name
-        if roomid:
-            l.roomid = roomid
+    def update(cls,id,name):
+        l = cls.query.filter_by(id = id).first()
+        l.name = name
         db.session.commit()
 
     @classmethod
     def delete(cls, id):
-        l = cls.query.get(id)
+        l = cls.query.filter_by(id = id).first_or_404()
         db.session.delete(l)
         db.session.commit()
 
     @classmethod
     def list(cls, id=None, uid=None, aid=None):
         if id is not None:
-            s = cls.query.get(id)
+            s = cls.query.filter_by(id = id).first()
         elif uid is not None:
             s = cls.query.filter_by(uid = uid)
         elif aid is not None:

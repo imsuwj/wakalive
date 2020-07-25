@@ -30,8 +30,7 @@ input[type='submit'],button{
 }
 
 #headbox ul{
-    position: absolute;
-    right: 0;
+    float: right;
 }
 
 #headbox ul li{
@@ -65,12 +64,8 @@ h1#sitename{
     width: 90%;
     font-size: 16px;
     padding: .4em;
-    max-width: 960px;
-    margin: auto;
 }
-#live_list{
 
-}
 #live_list ul{
     padding: 0;
     list-style: none;
@@ -90,7 +85,6 @@ h1#sitename{
     background: #21A3FF;
     border-radius: 5px;
     margin: .5em 0;
-    padding: .5em;
 }
 #live_list li:hover{
     background: #F0C808;
@@ -101,6 +95,7 @@ h1#sitename{
     color: #FFF;
     display: block;
     font-size: 1.2em;
+    padding: .5em;
     text-shadow: 0px 0px 1px #fff;
 }
 
@@ -124,8 +119,6 @@ h1#sitename{
     border: 1px solid #ccc;
     margin: 2em auto;
     padding: 1em;
-    background: #f3f3f3;
-    box-shadow: 0 0 5px #ccc;
 }
 
 .info label{
@@ -139,7 +132,7 @@ h1#sitename{
     margin: .2em auto;
     padding: .4em 1em;
 }
-.info input[type="checkbox"],.info input[type='radio']{
+.info input[type="checkbox"]{
     width: auto;
     display: inline;
 }
@@ -182,32 +175,4 @@ h1#sitename{
 
 #livename{
     text-align: left;
-    margin: 0 auto;
-}
-
-#chatroom{
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 0 1em;
-    overflow: auto;
-    height: 250px;
-}
-#chatroom p{
-    padding: 0;
-    line-height: .8em;
-    color: #666;
-}
-
-#chatroom .strong{
-    color: #000;
-}
-
-.chatbox input,.chatbox button{
-    width: 100%;
-}
-.chatbox input{
-    border-top: 0;
-    padding: 1em;
-
 }

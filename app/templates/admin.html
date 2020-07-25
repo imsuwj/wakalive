@@ -8,12 +8,10 @@
               <div class="user_info">
                   用户ID：<span class="id">{{ user.id }}</span>
                   用户邮箱：<span class="email">{{ user.email }}</span>
-                  昵称：<span class="nickname">{{ user.nickname }}</span>
-                  审核状态：<span class="passstatus">{{ user.is_passed() }}</span>
               </div>
               <div class="live_info">
                   直播：
-                    <a href="{{ url_for('live',id = user.lives.first().id )}}" class="live">{{ user.lives.first().name}}</a>
+                    <a href="{{ url_for('live',aid = user.lives.first().aid )}}" class="live">{{ user.lives.first().name}}</a>
               </div>
               <div class="manage">
                   <form action="{{ url_for('admin_pass_user') }}" method=post>
